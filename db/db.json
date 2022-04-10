@@ -1,0 +1,40 @@
+{
+  "produtos": {
+    "fixo": [
+      {
+        "id": 1,
+        "tipo": "Ilimitado",
+        "valor": 24.90
+      }
+    ],
+    "tv": [
+      {
+        "id": 1,
+        "tipo": "Ultimate HD",
+        "valor": 29.90
+      },
+      {
+        "id": 2,
+        "tipo": "Full HD",
+        "valor": 49.90
+      }
+    ],
+    "internet": [
+      {
+        "id": 1,
+        "tipo": "100MB",
+        "valor": 100.00
+      },
+      {
+        "id": 2,
+        "tipo": "200MB",
+        "valor": 150.00
+      },
+      {
+        "id": 3,
+        "tipo": "300MB",
+        "valor": 200.00
+      }
+    ]
+  }
+}
