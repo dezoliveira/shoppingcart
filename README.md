@@ -1,5 +1,10 @@
 # shoppingcart
 
+## JSON Server API
+```
+yarn api
+```
+
 ## Project setup
 ```
 yarn install
