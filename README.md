@@ -1,10 +1,5 @@
 # shoppingcart
 
-## JSON Server API
-```
-yarn api
-```
-
 ## Project setup
 ```
 yarn install
@@ -23,6 +18,11 @@ yarn build
 ### Lints and fixes files
 ```
 yarn lint
+```
+
+## JSON Server API
+```
+yarn api
 ```
 
 ### Customize configuration
