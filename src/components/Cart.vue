@@ -12,11 +12,18 @@
 
       <div
         class="card"
+        :class="[{'card-selected' : produto.id == checked}]"
         v-for="produto in internet"
         :key="produto.id"
+        :id="produto.id"
       >
 
-        <input type="radio" name="radioInternet" class="form-check-input m-2" @click="enableTvFixo(produto)">
+        <input 
+          type="radio" 
+          name="radioInternet" 
+          class="form-check-input m-2" 
+          @click="enableTvFixo(produto)"
+        >
         <div class="card-title">
           <h2>{{produto.tipo}}</h2>
         </div>
@@ -47,11 +54,12 @@
 
       <div
         class="card"
+        :class="[{'disabled' : this.cliqueTv == false}]"
         v-for="produto in tv"
         :key="produto.id"
       >
 
-        <input type="radio" name="radioTv" class="form-check-input m-2" :disabled="!this.clique" @click="addProduct(produto)">
+        <input type="radio" name="radioTv" class="form-check-input m-2" :disabled="!this.cliqueDisabled" @click="addProduct(produto)">
         <div class="card-title">
           <h2>{{produto.tipo}}</h2>
         </div>
@@ -81,11 +89,12 @@
     <div class="d-flex gap-4 py-4">
       <div
           class="card"
+          :class="[{'card-selected' : this.cliqueTelefone == true}]"
           v-for="produto in fixo"
           :key="produto.id"
       >
         <div>
-          <input id="" type="radio" name="radioFone" class="form-check-input m-2" :disabled="!this.clique" @click="addProduct(produto)">
+          <input id="" type="radio" name="radioFone" class="form-check-input m-2" :disabled="!this.cliqueDisabled" @click="addProduct(produto)">
         <div class="card-title">
           <h2>{{produto.tipo}}</h2>
         </div>
@@ -159,14 +168,21 @@
         type="button" 
         class="btn btn-primary my-2" 
         value="Continuar"
+        @click="showAlert()"
       >
 
+    </div>
+
+    <div v-if="this.spinner" class="spin">
+      <Message></Message>
     </div>
 
   </div>
 </template>
 
 <script>
+import Message from './Message.vue'
+
 export default {
   name: 'Cart',
 
@@ -176,11 +192,20 @@ export default {
       tvData: null,
       fixoData: null,
       produto: null,
-      clique: false,
+      cliqueDisabled: false,
+      cliqueInternet: false,
+      cliqueTv: false,
+      cliqueTelefone: false,
+      picked: null,
+      spinner: false,
       produtosCart: [],
       total: 0
     }
   }, 
+
+   components: {
+    Message
+  },
 
   methods:{
     async getProdutos() {
@@ -192,7 +217,8 @@ export default {
     },
 
     enableTvFixo(produto){
-      this.clique = true
+      this.cliqueDisabled = true
+      this.cliqueInternet = true
       this.addProduct(produto)
     },
 
@@ -209,8 +235,20 @@ export default {
     removeProduct(produtosCart){
       this.produtosCart.pop(produtosCart.id)
       this.total = this.total - produtosCart.valor
-    }
+    },
 
+    showAlert() {
+      this.$swal.fire({
+        icon: 'success',
+        title: 'Obrigado!',
+        text: 'Seu plano foi cadastrado com sucesso!',
+        
+      }).then((result) => {
+        if(result.isConfirmed){
+          location.reload();
+        }
+      })
+    },
   },
 
   mounted(){
@@ -278,8 +316,20 @@ export default {
     border-top: none;
   }
 
+  .card-selected{
+    border-color: blueviolet;
+  }
+
+  .form-check-input{
+    cursor: pointer;
+  }
+
   .form-check-input:checked{
     background-color: blueviolet;
+  }
+
+  .disabled .card{
+    border-color: transparent;
   }
 
   .borderContainer{
@@ -291,5 +341,30 @@ export default {
   .icon{
     color: blueviolet;
   }
+
+  @keyframes spinner {
+    0% {
+      transform: translate3d(-50%, -50%, 0) rotate(0deg);
+    }
+    100% {
+      transform: translate3d(-50%, -50%, 0) rotate(360deg);
+    }
+  }
+
+  .spin::before {
+    animation: 1.5s linear infinite spinner;
+    animation-play-state: inherit;
+    border: solid 5px #cfd0d1;
+    border-bottom-color: #1c87c9;
+    border-radius: 50%;
+    content: "";
+    position: absolute;
+    top: 120%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    will-change: transform;
+    width: 150px;
+    height: 150px;
+}
 
 </style>
